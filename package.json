@@ -1,57 +1,61 @@
-{
-  "name": "angular-karma-jasmine",
-  "version": "0.0.0",
-  "license": "MIT",
-  "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
-    "sonar": "sonar-scanner"
-  },
-  "private": true,
-  "dependencies": {
-    "@angular/animations": "^4.0.0",
-    "@angular/common": "^4.0.0",
-    "@angular/compiler": "^4.0.0",
-    "@angular/core": "^4.0.0",
-    "@angular/forms": "^4.0.0",
-    "@angular/http": "^4.0.0",
-    "@angular/platform-browser": "^4.0.0",
-    "@angular/platform-browser-dynamic": "^4.0.0",
-    "@angular/router": "^4.0.0",
-    "core-js": "^2.4.1",
-    "rxjs": "^5.4.1",
-    "zone.js": "^0.8.14",
-    "karma-coverage": "^2.0.2",
-    "karma-phantomjs-launcher": "^1.0.4",
-    "karma-spec-reporter": "^0.0.32",
-    "puppeteer": "^5.0.0"
-  },
-  "devDependencies": {
-    "@angular/cli": "1.2.4",
-    "@angular/compiler-cli": "^4.0.0",
-    "@angular/language-service": "^4.0.0",
-    "@types/jasmine": "~2.5.53",
-    "@types/jasminewd2": "~2.0.2",
-    "@types/node": "~6.0.60",
-    "codelyzer": "~3.0.1",
-    "jasmine-core": "~2.6.2",
-    "jasmine-spec-reporter": "~4.1.0",
-    "karma": "~1.7.0",
-    "karma-chrome-launcher": "~2.1.1",
-    "karma-cli": "~1.0.1",
-    "karma-coverage-istanbul-reporter": "latest",
-    "karma-jasmine": "~1.1.0",
-    "karma-jasmine-html-reporter": "^0.2.2",
-    "karma-junit-reporter": "^2.0.1",
-    "karma-spec-reporter": "^0.0.32",
-    "protractor": "~5.1.2",
-    "ts-node": "~3.0.4",
-    "tslint": "~5.3.2",
-    "sonar-scanner" : "^3.1.0",
-    "typescript": "~2.3.3"
-  }
-}
+// Karma configuration file, see link for more information
+// https://karma-runner.github.io/0.13/config/configuration-file.html
+process.env.CHROME_BIN = require('puppeteer').executablePath()
+
+module.exports = function (config) {
+  config.set({
+    basePath: '',
+    frameworks: ['jasmine', '@angular/cli'],
+    browsers: ['ChromeHeadless'],
+    plugins: [
+      require('karma-jasmine'),
+      require('karma-chrome-launcher'),
+      require('karma-jasmine-html-reporter'),
+      require('karma-coverage-istanbul-reporter'),
+      require('@angular/cli/plugins/karma'),
+      require('karma-phantomjs-launcher'),
+      require('karma-coverage'),
+      require('karma-sonarqube-unit-reporter')
+    ],
+    client:{
+      clearContext: false // leave Jasmine Spec Runner output visible in browser
+    },
+    coverageIstanbulReporter: {
+      reports: [ 'html', 'lcovonly','text-summary' ],
+      fixWebpackSourcePaths: true,
+      thresholds: {
+          statements: 80,
+          lines: 80,
+          branches: 80,
+          functions: 80
+        }
+    },
+    angularCli: {
+      environment: 'dev'
+    },
+    reporters: ['progress','kjhtml','dots','sonarqubeUnit'],
+    sonarQubeUnitReporter: {
+      sonarQubeVersion: 'LATEST', 
+      outputDir: 'junitResult', 
+      outputFile: 'testresult.xml', 
+      useBrowserName: false,
+    },
+
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    autoWatch: true,
+    customLaunchers: {
+        ChromeHeadless: {
+            base: 'Chrome',
+            flags: [
+            '--headless',
+            '--disable-web-security',
+            '--disable-setuid-sandbox',
+            '--no-sandbox',
+            '--remote-debugging-port=9222',]
+      }
+},
+    singleRun :true,
+  });
+};
