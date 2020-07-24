@@ -36,8 +36,8 @@ module.exports = function (config) {
     reporters: ['progress','kjhtml','dots','sonarqubeUnit'],
     sonarQubeUnitReporter: {
       sonarQubeVersion: 'LATEST', 
-      outputDir: 'junitResult', 
-      outputFile: 'testresult.xml', 
+      outputDir: 'unitTestResult', 
+      outputFile: 'testResult.xml', 
       useBrowserName: false,
     },
 
