@@ -34,12 +34,13 @@ module.exports = function (config) {
       environment: 'dev'
     },
     reporters: ['progress','kjhtml','dots','sonarqubeUnit'],
-    sonarQubeUnitReporter : {
+    sonarQubeUnitReporter: {
       sonarQubeVersion: 'LATEST',
-      outputDir: 'unitTestResult',
-      outputFile: 'unitTestResult.xml',
+      outputDir: 'junitResult',
+      outputFile: 'testresult.xml',
       useBrowserName: false,
-          },
+    },
+
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
